@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.11.1" />
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.11.1" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
   </ItemGroup>
 
