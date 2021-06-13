@@ -37,41 +37,64 @@ namespace WebApiLoginJwt.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> CreateUser([FromBody] UserInfo model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = new ApplicationUser
+                if (ModelState.IsValid)
                 {
-                    UserName = model.user,
-                    Email = model.email
-                };
-                var result = await _userManager.CreateAsync(user, model.password);
-                if (result.Succeeded)
-                    return BuildToken(model);
+                    var user = new ApplicationUser
+                    {
+                        UserName = model.user
+                    };
+                    var result = await _userManager.CreateAsync(user, model.password);
+                    if (result.Succeeded)
+                    {
+                        var res = await _signInManager.PasswordSignInAsync(model.user, model.password, false, false);
+                        if (res.Succeeded)
+                            return BuildToken(model);
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, "Invalid Login attempt.");
+                            return NotFound(ModelState);
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(result.Errors);
+                    }
+                }
                 else
-                    return BadRequest(result.Errors);
+                    return BadRequest(ModelState);
             }
-            else
-                return BadRequest(ModelState);
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPost]
         [Route("Login")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Login([FromBody] UserInfo model)
         {
-            if(ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(model.user, model.password, false, false);
-                if (result.Succeeded)
-                    return BuildToken(model);
-                else
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid Login attempt.");
-                    return BadRequest(ModelState);
+                    var result = await _signInManager.PasswordSignInAsync(model.user, model.password, false, false);
+                    if (result.Succeeded)
+                        return BuildToken(model);
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid Login attempt.");
+                        return NotFound(ModelState);
+                    }
                 }
+                else
+                    return BadRequest(ModelState);
             }
-            else
-                return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private IActionResult BuildToken(UserInfo model)
@@ -81,7 +104,6 @@ namespace WebApiLoginJwt.Controllers
                 var Claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.UniqueName, model.user),
-                    new Claim(JwtRegisteredClaimNames.Email, model.email),
                     new Claim(JwtRegisteredClaimNames.Jti, new Guid().ToString())
                 };
 
@@ -89,8 +111,8 @@ namespace WebApiLoginJwt.Controllers
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
                 var expiration = DateTime.UtcNow.AddHours(1);
                 JwtSecurityToken token = new JwtSecurityToken(
-                    issuer: "https://localhost:44376",
-                    audience: "https://localhost:44376",
+                    issuer: "http://localhost:13105",
+                    audience: "http://localhost:13105",
                     claims: Claims,
                     expires: expiration,
                     signingCredentials: creds

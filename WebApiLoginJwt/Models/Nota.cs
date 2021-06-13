@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace WebApiLoginJwt.Models
 {
-    public class UserInfo
+    public class Nota
     {
-        public string user { get; set; }
-        public string password { get; set; }
+        public int NotaId { get; set; }
+        public string UserId { get; set; }
+        public string nota { get; set; }
     }
 }

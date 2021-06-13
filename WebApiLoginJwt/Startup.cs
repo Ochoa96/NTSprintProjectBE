@@ -45,8 +45,8 @@ namespace WebApiLoginJwt
                                       ValidateAudience = true,
                                       ValidateLifetime = true,
                                       ValidateIssuerSigningKey = true,
-                                      ValidIssuer = "https://localhost:44376",
-                                      ValidAudience = "https://localhost:44376",
+                                      ValidIssuer = "http://localhost:13105",
+                                      ValidAudience = "http://localhost:13105",
                                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["secret_key"])),
                                       ClockSkew = TimeSpan.Zero
                                   });
@@ -65,6 +65,14 @@ namespace WebApiLoginJwt
             {
                 app.UseHsts();
             }
+
+            app.UseCors(options =>
+            {
+                options.AllowAnyHeader();
+                options.AllowAnyMethod();
+                options.AllowAnyOrigin();
+                options.AllowCredentials();
+            });
 
             app.UseAuthentication();
             app.UseHttpsRedirection();

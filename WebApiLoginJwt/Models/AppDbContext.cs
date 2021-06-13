@@ -13,5 +13,6 @@ namespace WebApiLoginJwt.Models
             : base(options)
         {
         }
+        public DbSet<Nota> Notas { get; set; }
     }
 }
