@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/acoount/create",
       "environmentVariables": {
         "secret_key": "DGGDHBJKJUT!@#$%^&*cvhgjyfjgkukyut!@#$%^&*",
         "ASPNETCORE_ENVIRONMENT": "Development",

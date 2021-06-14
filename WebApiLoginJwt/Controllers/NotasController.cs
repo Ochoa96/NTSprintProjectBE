@@ -65,6 +65,23 @@ namespace WebApiLoginJwt.Controllers
             {
                 throw ex;
             }
-        }        
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete()
+        {
+            try
+            {
+                var user = await GetUser();
+                var toDelete = _context.Notas.Where(nota => nota.UserId == user.Id).ToArray();
+                _context.Notas.RemoveRange(toDelete);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
