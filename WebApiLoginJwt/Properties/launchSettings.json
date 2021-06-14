@@ -11,7 +11,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchUrl": "api/acount/create",
+      "launchUrl": "api/account/create",
       "environmentVariables": {
         "secret_key": "DGGDHBJKJUT!@#$%^&*cvhgjyfjgkukyut!@#$%^&*",
         "ASPNETCORE_ENVIRONMENT": "Development",
